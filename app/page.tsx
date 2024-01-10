@@ -1,5 +1,5 @@
-import {Button} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { LoginButton } from "@/components/auth/login-button";
 
 export default function Home() {
@@ -13,11 +13,11 @@ export default function Home() {
           A simple authentication service
         </p>
         <div>
-          <LoginButton>
-            <Button variant="secondary" size='lg'>
+           <LoginButton>
+            <Button variant="secondary" size="lg">
               Sign in
             </Button>
-          </LoginButton>
+           </LoginButton>
         </div>
       </div>
     </main>
