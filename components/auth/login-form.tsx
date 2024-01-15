@@ -19,6 +19,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
+import {login} from "@/actions/login";
 
 export const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -30,7 +31,7 @@ export const LoginForm = () => {
   })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values)
+    login(values)
   }
 
   return (
@@ -49,7 +50,7 @@ export const LoginForm = () => {
             <FormField
               control={form.control}
               name="email"
-              render={( field ) => (
+              render={( { field} ) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
@@ -66,7 +67,7 @@ export const LoginForm = () => {
             <FormField
               control={form.control}
               name="password"
-              render={( field ) => (
+              render={( { field } ) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
