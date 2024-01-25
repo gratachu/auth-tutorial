@@ -1,9 +1,18 @@
-import NextAuth from "next-auth"
+import NextAuth, { DefaultSession } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { UserRole } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
 import {getUserById} from "@/data/user";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      role: UserRole
+    }
+  }
+}
 
 export const {
   handlers: { GET, POST },
@@ -32,7 +41,6 @@ export const {
 
       if ( !existingUser ) return token
 
-      // @ts-ignore
       token.role = existingUser.role
 
       return token
