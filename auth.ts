@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession } from "next-auth"
+import NextAuth, { DefaultSession, Session } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
 
@@ -10,7 +10,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       role: UserRole
-    }
+    } & DefaultSession["user"]
   }
 }
 
