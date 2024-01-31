@@ -33,6 +33,17 @@ export const {
     }
   },
   callbacks: {
+    async signIn({ user, account }) {
+      // MEMO: Allow OAuth without email verification
+      if (account?.provider !== "credentials") return true
+
+      const existingUser = user.id ? await getUserById(user.id) : null
+
+      if (!existingUser?.emailVerified) return false
+
+      return true
+    },
+
     async session({ token, session }) {
       console.log({ sessionToken: token })
 
