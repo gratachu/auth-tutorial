@@ -1,11 +1,11 @@
 "use client";
 
-import {useState, useTransition} from "react";
+import { useState, useTransition } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import  { LoginSchema} from "@/schemas";
+import { LoginSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -16,11 +16,11 @@ import {
 } from "@/components/ui/form"
 
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {FormError} from "@/components/form-error";
-import {FormSuccess} from "@/components/form-success";
-import {login} from "@/actions/login";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { login } from "@/actions/login";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("")
@@ -42,8 +42,8 @@ export const LoginForm = () => {
     startTransition(() => {
       login(values)
         .then((data) => {
-          setSuccess(data.success)
-          setError(data.error)
+          setSuccess(data?.success)
+          setError(data?.error)
         })
     })
   }
@@ -64,7 +64,7 @@ export const LoginForm = () => {
             <FormField
               control={form.control}
               name="email"
-              render={( { field} ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
@@ -73,7 +73,7 @@ export const LoginForm = () => {
                       disabled={isPending}
                       type="email"
                       placeholder="gratachu@example.com"
-                     />
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -82,7 +82,7 @@ export const LoginForm = () => {
             <FormField
               control={form.control}
               name="password"
-              render={( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
