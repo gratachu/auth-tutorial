@@ -1,8 +1,12 @@
 "use server"
 
 import * as z from "zod";
+import bcrypt from "bcrypt";
 
 import { NewPasswordSchema } from "@/schemas";
+import { getPasswordResetTokenByToken } from "@/data/password-data-token";
+import {getUserByEmail} from "@/data/user";
+import {db} from "@/lib/db";
 
 export const newPassword = async (
   values: z.infer<typeof NewPasswordSchema>,
@@ -20,5 +24,34 @@ export const newPassword = async (
 
   const { password } = validatedFields.data;
 
-  // const existingToken = await getPassswordResetTokenByToken(token);
+  const existingToken = await getPasswordResetTokenByToken(token);
+
+  if (!existingToken) {
+    return { error: "Invalid token!" }
+  }
+
+  const hasExpired = new Date(existingToken.expires) < new Date();
+
+  if (hasExpired) {
+    return { error: "Token has expired!" }
+  }
+
+  const exsitingUser = await getUserByEmail(existingToken.email);
+
+  if (!exsitingUser) {
+    return { error: "Email does not exist!" }
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await db.user.update({
+    where: { id: exsitingUser.id },
+    data: { password: hashedPassword },
+  })
+
+  await db.passwordResetToken.delete({
+    where: { id: existingToken.id },
+  })
+
+  return { success: "Password updated!" }
 }
